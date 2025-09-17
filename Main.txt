@@ -1,0 +1,32 @@
+-- Tool "Sumir"
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local LocalPlayer = Players.LocalPlayer
+
+-- Cria a Tool
+local tool = Instance.new("Tool")
+tool.Name = "Sumir"
+tool.RequiresHandle = false
+tool.CanBeDropped = false
+
+-- Função que executa os scripts
+local function activate()
+    -- 1) Fire do Remote
+    if ReplicatedStorage:FindFirstChild("Remotes") and ReplicatedStorage.Remotes:FindFirstChild("ResetCharacterAppearance") then
+        ReplicatedStorage.Remotes.ResetCharacterAppearance:FireServer()
+    end
+
+    -- 2) Loadstring do script invisível
+    local success, err = pcall(function()
+        loadstring(game:HttpGet("https://rawscripts.net/raw/Brookhaven-RP-Avatar-invisible-45072"))()
+    end)
+    if not success then
+        warn("Erro ao executar o script invisível:", err)
+    end
+end
+
+-- Conectar o click (PC e Mobile)
+tool.Activated:Connect(activate)
+
+-- Coloca a Tool no backpack do jogador
+tool.Parent = LocalPlayer:WaitForChild("Backpack")
